@@ -73,3 +73,25 @@ def load_customers_data(df_customers: pd.DataFrame):
 
         logger.info("Data successfully saved to clean_customers.csv")
 
+@task(name="Load Fct Orders")
+def load_orders_data(df_orders: pd.DataFrame):
+    logger = get_run_logger()
+    try:
+        logger.info("Attempting to create and save data to analytics.db...")
+
+        conn = sqlite3.connect("analytics.db")
+
+        df_orders.to_sql("fct_orders", conn, if_exists="replace", index=False)
+
+        conn.close()
+
+        logger.info("Data successfully saved to analytics.db")
+
+    except Exception as e:
+
+        logger.warning(f"Database error encountered: {e}. Falling back to CSV.")
+
+        df_orders.to_csv("clean_fct_orders.csv", index=False)
+
+        logger.info("Data successfully saved to clean_fct_orders.csv")
+
