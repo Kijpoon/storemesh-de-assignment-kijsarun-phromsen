@@ -4,9 +4,18 @@
     <mappings />
     <preferences />
   </component>
+  <component name="DBNavigator.Project.DataEditorManager">
+    <record-view-column-sorting-type value="BY_INDEX" />
+    <value-preview-text-wrapping value="true" />
+    <value-preview-pinned value="false" />
+  </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
       <assistant-state connection-id="virtual-sqlite-connection" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+        <tools />
+        <mcp-servers />
+      </assistant-state>
+      <assistant-state connection-id="121c0405-3f73-4425-b0b7-b3b4f9158286" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
         <tools />
         <mcp-servers />
       </assistant-state>
@@ -28,8 +37,17 @@
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="121c0405-3f73-4425-b0b7-b3b4f9158286" />
   </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
+  </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.DatabasePrerequisiteManager">
+    <prerequisites />
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="121c0405-3f73-4425-b0b7-b3b4f9158286" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
