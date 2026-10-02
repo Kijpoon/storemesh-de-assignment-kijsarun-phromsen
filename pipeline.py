@@ -11,6 +11,9 @@ def extract_data(db_path: str):
 
     df_orders = pd.read_sql_query("SELECT * FROM vw_raw_orders", conn)
 
+    df_rates = pd.read_sql_query("SELECT * "
+                                 "FROM vw_exchange_rates", conn)
+
     conn.close()
-    return df_customers, df_orders
+    return df_customers, df_orders, df_rates
 
