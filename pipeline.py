@@ -1,5 +1,5 @@
 # Import relevant package
-from prefect import task, get_run_logger
+from prefect import task, get_run_logger, flow
 import pandas as pd
 import sqlite3
 import re
@@ -94,4 +94,20 @@ def load_orders_data(df_orders: pd.DataFrame):
         df_orders.to_csv("clean_fct_orders.csv", index=False)
 
         logger.info("Data successfully saved to clean_fct_orders.csv")
+
+@flow(name="StoreMesh ETL Pipeline")
+def main_etl_flow():
+    # 1. Extract
+    raw_customers, raw_orders, raw_rates = extract_data("shopdata.db")
+
+    # 2. Transform
+    clean_customers = transform_customers(raw_customers)
+    clean_orders = transform_orders(raw_orders, raw_rates)
+
+    # 3. Load
+    dim_customers = load_customers_data(clean_customers)
+    fct_orders = load_orders_data(clean_orders)
+
+if __name__ == "__main__":
+    main_etl_flow()
 
