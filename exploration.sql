@@ -5,6 +5,9 @@ from vw_raw_customers;
 select *
 from vw_raw_orders;
 
+select *
+from vw_exchange_rates;
+
 -- Check for missing email & phone number (Null) in vw_raw_customers table
 select *
 from vw_raw_customers
