@@ -17,3 +17,23 @@ def extract_data(db_path: str):
     conn.close()
     return df_customers, df_orders, df_rates
 
+def transform_orders(df_order: pd.DataFrame, df_rate: pd.DataFrame) -> pd.DataFrame:
+
+    df_clean = df_order[df_order["total_amount"] > 0].copy()
+
+    df_merge = pd.merge(
+        df_clean,
+        df_rate,
+        left_on=["order_date", "currency"],
+        right_on=["date", "currency"],
+        how="left"
+    )
+
+    df_merge["rate_to_usd"] = df_merge["rate_to_usd"].fillna(1.0)
+
+    df_merge["usd_amount"] = df_merge["total_amount"] * df_merge["rate_to_usd"]
+
+    df_merge = df_merge.drop(columns=["date", "rate_to_usd"])
+
+    return df_merge
+
