@@ -37,3 +37,12 @@ def transform_orders(df_order: pd.DataFrame, df_rate: pd.DataFrame) -> pd.DataFr
 
     return df_merge
 
+def transform_customers(df: pd.DataFrame) -> pd.DataFrame:
+    df_clean = df.drop_duplicates(subset=['customer_id'], keep='last').reset_index(drop=True)
+
+    df_clean["email"] = df_clean["email"].fillna("unknown@domain.com")
+
+    df_clean["phone"] = df_clean["phone"].apply(lambda x: re.sub(r"\D", "", str(x)))
+
+    return df_clean
+
