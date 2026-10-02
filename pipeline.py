@@ -1,4 +1,5 @@
 # Import relevant package
+from prefect import task, get_run_logger
 import pandas as pd
 import sqlite3
 import re
@@ -20,6 +21,8 @@ def extract_data(db_path: str):
 def transform_orders(df_order: pd.DataFrame, df_rate: pd.DataFrame) -> pd.DataFrame:
 
     df_clean = df_order[df_order["total_amount"] > 0].copy()
+
+    df_clean["currency"] = df_clean["currency"].fillna("USD")
 
     df_merge = pd.merge(
         df_clean,
@@ -45,4 +48,28 @@ def transform_customers(df: pd.DataFrame) -> pd.DataFrame:
     df_clean["phone"] = df_clean["phone"].apply(lambda x: re.sub(r"\D", "", str(x)))
 
     return df_clean
+
+@task(name="Load Dim Customers")
+def load_customers_data(df_customers: pd.DataFrame):
+
+    logger = get_run_logger()
+
+    try:
+        logger.info("Attempting to create and save data to analytics.db...")
+
+        conn = sqlite3.connect("analytics.db")
+
+        df_customers.to_sql("dim_customers", conn, if_exists="replace", index=False)
+
+        conn.close()
+
+        logger.info("Data successfully saved to analytics.db")
+
+    except Exception as e:
+
+        logger.warning(f"Database error encountered: {e}. Falling back to CSV.")
+
+        df_customers.to_csv("clean_customers.csv", index=False)
+
+        logger.info("Data successfully saved to clean_customers.csv")
 
