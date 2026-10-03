@@ -8,7 +8,8 @@ def test_transform_customers():
         "customer_id": [1, 2, 3],
         "full_name": ["Jake", "Roger", "Becci"],
         "email": [None, "roger@example.com", "becci@example.com"],
-        "phone": ["+1(417)2946090", "368-869-3049", "1(573)242-6353"]
+        "phone": ["+1(417)2946090", "368-869-3049", "1(573)242-6353"],
+        "signup_date": ["2023-03-16", "2023-04-25", "2023-01-30"]
     })
 
     test_customers = transform_customers(dummy_customer)

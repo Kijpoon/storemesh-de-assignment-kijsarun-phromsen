@@ -18,6 +18,7 @@ def extract_data(db_path: str):
     conn.close()
     return df_customers, df_orders, df_rates
 
+# Transform Orders Data
 def transform_orders(df_order: pd.DataFrame, df_rate: pd.DataFrame) -> pd.DataFrame:
 
     df_clean = df_order[df_order["total_amount"] > 0].copy()
@@ -40,8 +41,11 @@ def transform_orders(df_order: pd.DataFrame, df_rate: pd.DataFrame) -> pd.DataFr
 
     return df_merge
 
+# Transform Customers Data
 def transform_customers(df: pd.DataFrame) -> pd.DataFrame:
-    df_clean = df.drop_duplicates(subset=['customer_id'], keep='last').reset_index(drop=True)
+    df['signup_date'] = pd.to_datetime(df['signup_date'])
+
+    df_clean = df.sort_values(by=['customer_id', 'signup_date']).drop_duplicates(subset=['customer_id'], keep='last').reset_index(drop=True)
 
     df_clean["email"] = df_clean["email"].fillna("unknown@domain.com")
 
@@ -49,6 +53,7 @@ def transform_customers(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_clean
 
+# Create New Database and Load Data into Database
 @task(name="Load Dim Customers")
 def load_customers_data(df_customers: pd.DataFrame):
 
