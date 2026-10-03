@@ -23,10 +23,10 @@ The pipeline (`pipeline.py`) resolves the identified issues using Python and Pan
 - Converts transaction currencies to USD using the provided exchange rates.
 
 ## Part 3: Unit Testing
-Isolated testing (`test_pipeline.py`) validates the transformation logic using `pytest` and in-memory dummy DataFrames to ensure robustness against edge cases without relying on a live database connection.
+test_pipeline.py uses pytest with in-memory DataFrames, so no database connection is needed. It covers the phone standardizer, customer deduplication, and currency conversion, including edge cases such as missing emails and total_amount <= 0.
 
 ## Part 4: Data Analytics
-* **Customer Lifetime Value (`clv_report.sql`)**: A SQL query that generates a CLV report from the cleaned database (`analytics.db`), ranking customers by their total lifetime spending in USD.
+clv_report.sql is a single query over dim_customers and fct_orders that returns customer_id, full_name, total_orders_placed, lifetime_value_usd, and customer_cohort (YYYY-MM of signup), ranked by lifetime_value_usd in descending order.
 
 ## Tech Stack
 * **Language**: Python 3
