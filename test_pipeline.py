@@ -17,3 +17,31 @@ def test_transform_customers():
     assert test_customers["phone"].iloc[1] == "3688693049"
     assert test_customers["phone"].iloc[2] == "15732426353"
     assert test_customers["email"].iloc[0] == "unknown@domain.com"
+
+def test_transform_orders():
+    dummy_orders = pd.DataFrame({
+        "order_id": [101, 102, 103, 104],
+        "customer_id": [1, 2, 3, 4],
+        "total_amount": [-100, 200, 300, 400],
+        "order_date": ["2023-01-01", "2023-01-01", "2023-01-02", "2023-01-02"],
+        "currency": ["USD", "EUR", None, "JPY"],
+    })
+
+    dummy_rate = pd.DataFrame({
+        "currency": ["EUR", "JPY"],
+        "rate_to_usd": [1.12, 0.0069],
+        "date": ["2023-01-01", "2023-01-02"],
+    })
+
+    test_orders = transform_orders(dummy_orders, dummy_rate)
+
+    assert len(test_orders) == 3
+    assert 101 not in test_orders["order_id"].values
+
+    assert test_orders.loc[test_orders["order_id"] == 103, "currency"].iloc[0] == "USD"
+    assert test_orders.loc[test_orders["order_id"] == 103, "usd_amount"].iloc[0] == 300
+    assert test_orders.loc[test_orders["order_id"] == 102, "usd_amount"].iloc[0] == 224.00000000000003
+    assert test_orders.loc[test_orders["order_id"] == 104, "usd_amount"].iloc[0] == 2.76
+
+    assert "rate_to_usd" not in test_orders.columns
+    assert "date" not in test_orders.columns
