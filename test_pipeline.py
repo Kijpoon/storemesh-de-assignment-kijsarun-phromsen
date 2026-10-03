@@ -40,8 +40,20 @@ def test_transform_orders():
 
     assert test_orders.loc[test_orders["order_id"] == 103, "currency"].iloc[0] == "USD"
     assert test_orders.loc[test_orders["order_id"] == 103, "usd_amount"].iloc[0] == 300
-    assert test_orders.loc[test_orders["order_id"] == 102, "usd_amount"].iloc[0] == 224.00000000000003
-    assert test_orders.loc[test_orders["order_id"] == 104, "usd_amount"].iloc[0] == 2.76
+    assert test_orders.loc[test_orders["order_id"] == 102, "usd_amount"].iloc[0] == pytest.approx(224.0)
+    assert test_orders.loc[test_orders["order_id"] == 104, "usd_amount"].iloc[0] == pytest.approx(2.76)
 
     assert "rate_to_usd" not in test_orders.columns
     assert "date" not in test_orders.columns
+
+def test_duplicate_customer_keeps_latest_signup():
+    df = pd.DataFrame({
+        "customer_id": [1, 1],
+        "full_name": ["Kyle", "kyle"],
+        "email": ["kyle@example.com", "kyle@example.com"],
+        "phone": ["12336579080", "12336579080"],
+        "signup_date": ["2023-01-01", "2023-06-01"],
+    })
+    result = transform_customers(df)
+    assert len(result) == 1
+    assert result["full_name"].iloc[0] == "kyle"
