@@ -24,7 +24,7 @@ where order_date is null
 select customer_id, count(*) as customer_count
 from vw_raw_customers
 group by customer_id
-้having customer_count > 1;
+having customer_count > 1;
 
 -- Check duplicate row in in vw_raw_orders table
 select order_id, count(*) as order_count
