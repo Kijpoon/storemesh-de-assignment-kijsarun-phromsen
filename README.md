@@ -52,16 +52,20 @@ storemesh-de-assignment/
 ### 1. Setup Environment: 
 - Ensure you have `Python 3.12+` installed. It is recommended to use a virtual environment.
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+For Mac: python3 -m venv venv
+For Windows: python -m venv venv
+For Mac: source venv/bin/activate
+For Windows: venv/Scripts/activate
 pip install -r requirements.txt
 ```
 ### 2. Run the ETL Pipeline: 
 - Execute the main pipeline to generate the `analytics.db` file. 
 *(Note: Prefect is configured to run in ephemeral mode, requiring no external server setup).*
 ```bash
-python3 pipeline.py
+For Mac: python3 pipeline.py
+For Windows: python pipeline.py
 ```
+
 ### 3. Run Unit Tests: 
 - Validate the transformation logic (e.g., phone standardizer and currency conversion) using dummy data.
 ```bash
