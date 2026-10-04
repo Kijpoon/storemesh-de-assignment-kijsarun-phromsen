@@ -39,6 +39,7 @@ clv_report.sql is a single query over dim_customers and fct_orders that returns 
 ## Project Structure
 ```text
 storemesh-de-assignment/
+├── shopdata.db          # Raw input database (Please place this file here before running)
 ├── exploration.sql      # Data Exploration to uncover anomalies 
 ├── pipeline.py          # Main ETL script (Extract, Transform, Load)
 ├── test_pipeline.py     # Unit tests for data cleaning logic
@@ -49,29 +50,50 @@ storemesh-de-assignment/
 ```
 
 ## How to Run
-### 1. Setup Environment: 
-- Ensure you have `Python 3.12+` installed. It is recommended to use a virtual environment.
+### 1. Setup Environment
+
+Ensure you have `Python 3.12+` installed. It is recommended to use a virtual environment.
+
+**For macOS / Linux:**
 ```bash
-For Mac: python3 -m venv venv
-For Windows: python -m venv venv
-For Mac: source venv/bin/activate
-For Windows: venv/Scripts/activate
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**For Windows (Command Prompt / PowerShell):**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**Install Dependencies:**
+```bash
 pip install -r requirements.txt
 ```
-### 2. Run the ETL Pipeline: 
+### 2. Data Setup (Prerequisite)
+This repository does not include the raw database file to keep the source control clean. Before running the pipeline, please ensure you have the raw data:
+- Obtain the shopdata.db file provided with the assignment.
+- Place the shopdata.db file directly into the root directory of this project (at the same level as pipeline.py).
+
+### 3. Run the ETL Pipeline: 
 - Execute the main pipeline to generate the `analytics.db` file. 
 *(Note: Prefect is configured to run in ephemeral mode, requiring no external server setup).*
+**For macOS / Linux:**
 ```bash
 For Mac: python3 pipeline.py
+```
+
+**For Windows (Command Prompt / PowerShell):**
+```bash
 For Windows: python pipeline.py
 ```
 
-### 3. Run Unit Tests: 
+### 4. Run Unit Tests: 
 - Validate the transformation logic (e.g., phone standardizer and currency conversion) using dummy data.
 ```bash
 pytest test_pipeline.py -v
 ```
-### 4. Generate CLV Report (SQL): 
+### 5. Generate CLV Report (SQL): 
 - Run the analytical query against the generated database to view the Customer Lifetime Value.
 ```bash
 sqlite3 analytics.db < clv_report.sql
