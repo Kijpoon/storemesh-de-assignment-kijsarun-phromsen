@@ -80,12 +80,12 @@ This repository does not include the raw database file to keep the source contro
 *(Note: Prefect is configured to run in ephemeral mode, requiring no external server setup).*
 **For macOS / Linux:**
 ```bash
-For Mac: python3 pipeline.py
+python3 pipeline.py
 ```
 
 **For Windows (Command Prompt / PowerShell):**
 ```bash
-For Windows: python pipeline.py
+python pipeline.py
 ```
 
 ### 4. Run Unit Tests: 
